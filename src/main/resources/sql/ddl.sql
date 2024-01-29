@@ -1,3 +1,5 @@
+USE archive;
+
 DROP TABLE IF EXISTS `tb_image`;
 
 CREATE TABLE `tb_image` (
