@@ -97,3 +97,27 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# ignore resources
+admin.css
+admin.js
+reset.css
+jquery.js
+CookieUtil.js
+DateUtil.js
+images/admin/
+archive_*.jsp
+
+# 김지원
+
+
+# 이지연
+
+
+# 이창규
+
+
+# 차소영
+
+
+# 최지혜
