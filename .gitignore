@@ -106,7 +106,7 @@ jquery.js
 CookieUtil.js
 DateUtil.js
 images/admin/
-archive_[a-zA-Z0-9].jsp
+archive_[a-zA-Z0-9]*.jsp
 
 # 김지원
 
