@@ -4,12 +4,14 @@ import com.sloop.archive.notice.domain.NoticeDTO;
 import com.sloop.archive.notice.service.NoticeService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Log4j2
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/notice") // URL을 클래스 레벨에서 설정
@@ -22,6 +24,7 @@ public class NoticeController {
     public String getNoticeList(Model model) {
         List<NoticeDTO> noticeList = noticeService.getAllNotice();
         model.addAttribute("noticeList", noticeList);
+        log.info("Notice list viewed"); // 로그 기록 추가
         return "list";
     }
 
@@ -30,6 +33,7 @@ public class NoticeController {
     public String getNotice(@PathVariable Long id, Model model) {
         NoticeDTO notice = noticeService.getNoticeById(id);
         model.addAttribute("notice", notice);
+        log.info("Viewing notice with id: {}", id); // 로그 기록 추가
         return "detail";
     }
 
@@ -43,6 +47,7 @@ public class NoticeController {
     @PostMapping("/create")
     public String createNotice(@ModelAttribute NoticeDTO noticeDTO) {
         noticeService.createNotice(noticeDTO);
+        log.info("New notice created: {}", noticeDTO.getTitle()); // 로그 기록 추가
         return "redirect:/notice/list";  // 공지사항 목록으로 리다이렉트
     }
 
@@ -58,6 +63,7 @@ public class NoticeController {
     @PostMapping("/update/{id}")
     public String updateNotice(@PathVariable Long id, @ModelAttribute NoticeDTO noticeDTO) {
         noticeService.updateNotice(id, noticeDTO);
+        log.info("Notice with id {} updated", id); // 로그 기록 추가
         return "redirect:/notice/list"; // 공지사항 목록으로 리다이렉트
     }
 
@@ -65,15 +71,8 @@ public class NoticeController {
     @PostMapping("/delete/{id}")
     public String deleteNotice(@PathVariable Long id) {
         noticeService.deleteNotice(id);
+        log.info("Notice with id {} deleted", id); // 로그 기록 추가
         return "redirect:/notice/list";  // 공지사항 목록으로 리다이렉트
     }
 
-
-
-//    @RequestMapping("/notice/list")
-//    public String noticeHome(Model model){
-//        List<NoticeDTO> noticeList = noticeService.getAllNoticeList();
-//        model.addAttribute("noticeList", noticeList);
-//        return "notice";
-//    }
 }
