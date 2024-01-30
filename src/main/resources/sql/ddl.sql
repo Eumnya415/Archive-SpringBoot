@@ -48,7 +48,7 @@ CREATE TABLE `tb_notice` (
                              `title`	varchar(255)	NOT NULL,
                              `content`	text	NOT NULL,
                              `views`	int	NOT NULL	DEFAULT 0,
-                             `regist_date`	timestamp	NOT NULL	DEFAULT now(),
+                             `register_date`	timestamp	NOT NULL	DEFAULT now(),
                              `pinned`	tinyint	NULL	DEFAULT 0	COMMENT '고정 1, 기본값 0',
                              `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
                              `update_date`	timestamp	NULL	DEFAULT null,
@@ -69,7 +69,7 @@ CREATE TABLE `tb_content` (
                               `title`	varchar(255)	NOT NULL,
                               `keyword`	varchar(255)	NULL,
                               `description`	varchar(255)	NULL,
-                              `regist_date`	timestamp	NOT NULL	DEFAULT now(),
+                              `register_date`	timestamp	NOT NULL	DEFAULT now(),
                               `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
                               `update_date`	timestamp	NULL,
                               `delete_flag`	tinyint	NULL	DEFAULT 0	COMMENT '삭제 1, 삭제없음 0',
@@ -117,7 +117,7 @@ CREATE TABLE `tb_user` (
                            `name`	varchar(20)	NOT NULL,
                            `email`	varchar(100)	NOT NULL,
                            `phone`	varchar(20)	NULL,
-                           `regist_date`	timestamp	NOT NULL	DEFAULT now(),
+                           `register_date`	timestamp	NOT NULL	DEFAULT now(),
                            `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
                            `update_date`	timestamp	NULL	DEFAULT null,
                            `delete_flag`	tinyint	NULL	DEFAULT 0	COMMENT '삭제 1, 삭제없음 0',
@@ -130,7 +130,7 @@ DROP TABLE IF EXISTS `tb_user_role`;
 CREATE TABLE `tb_user_role` (
                                 `id`	bigint auto_increment	NOT NULL,
                                 `user_id`	bigint	NOT NULL,
-                                `auth`	varchar(30)	NOT NULL	DEFAULT 'ROLE_USER'	COMMENT 'ROLE_STAFF, ROLE_ADMIN, DISABLED',
+                                `role`	varchar(30)	NOT NULL	DEFAULT 'ROLE_USER'	COMMENT 'ROLE_STAFF, ROLE_ADMIN, DISABLED',
                                 CONSTRAINT `PK_TB_USER_ROLE` PRIMARY KEY (`id`)
 );
 
