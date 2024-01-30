@@ -24,6 +24,7 @@ CREATE TABLE `tb_category` (
                                `show_flag`	tinyint	NOT NULL	DEFAULT 1	COMMENT '사용 1, 미사용 0',
                                `depth`	int	NOT NULL	DEFAULT 1	COMMENT '깊이',
                                `orders`	int	NOT NULL	DEFAULT 1	COMMENT '같은 깊이 내 순서',
+                               `register_date` timestamp NOT NULL DEFAULT NOW() COMMENT '등록일시',
                                `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
                                `update_date`	timestamp	NULL	COMMENT '수정일시',
                                `user_id`	bigint	NULL	COMMENT '수정한 회원 아이디',
@@ -48,7 +49,7 @@ CREATE TABLE `tb_notice` (
                              `title`	varchar(255)	NOT NULL,
                              `content`	text	NOT NULL,
                              `views`	int	NOT NULL	DEFAULT 0,
-                             `regist_date`	timestamp	NOT NULL	DEFAULT now(),
+                             `register_date`	timestamp	NOT NULL	DEFAULT now(),
                              `pinned`	tinyint	NULL	DEFAULT 0	COMMENT '고정 1, 기본값 0',
                              `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
                              `update_date`	timestamp	NULL	DEFAULT null,
@@ -69,7 +70,7 @@ CREATE TABLE `tb_content` (
                               `title`	varchar(255)	NOT NULL,
                               `keyword`	varchar(255)	NULL,
                               `description`	varchar(255)	NULL,
-                              `regist_date`	timestamp	NOT NULL	DEFAULT now(),
+                              `register_date`	timestamp	NOT NULL	DEFAULT now(),
                               `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
                               `update_date`	timestamp	NULL,
                               `delete_flag`	tinyint	NULL	DEFAULT 0	COMMENT '삭제 1, 삭제없음 0',
@@ -117,7 +118,7 @@ CREATE TABLE `tb_user` (
                            `name`	varchar(20)	NOT NULL,
                            `email`	varchar(100)	NOT NULL,
                            `phone`	varchar(20)	NULL,
-                           `regist_date`	timestamp	NOT NULL	DEFAULT now(),
+                           `register_date`	timestamp	NOT NULL	DEFAULT now(),
                            `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
                            `update_date`	timestamp	NULL	DEFAULT null,
                            `delete_flag`	tinyint	NULL	DEFAULT 0	COMMENT '삭제 1, 삭제없음 0',
@@ -130,7 +131,7 @@ DROP TABLE IF EXISTS `tb_user_role`;
 CREATE TABLE `tb_user_role` (
                                 `id`	bigint auto_increment	NOT NULL,
                                 `user_id`	bigint	NOT NULL,
-                                `auth`	varchar(30)	NOT NULL	DEFAULT 'ROLE_USER'	COMMENT 'ROLE_STAFF, ROLE_ADMIN, DISABLED',
+                                `role`	varchar(30)	NOT NULL	DEFAULT 'ROLE_USER'	COMMENT 'ROLE_STAFF, ROLE_ADMIN, DISABLED',
                                 CONSTRAINT `PK_TB_USER_ROLE` PRIMARY KEY (`id`)
 );
 
@@ -140,6 +141,7 @@ CREATE TABLE `tb_keyword_recommendation` (
                                              `id`	bigint auto_increment	NOT NULL	COMMENT '추천 키워드 아이디',
                                              `keyword`	varchar(255)	NOT NULL	COMMENT '키워드 내용',
                                              `orders`	int	NOT NULL	COMMENT '메인 노출 순서',
+                                             `register_date` timestamp NOT NULL DEFAULT now() COMMENT '등록일시',
                                              `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
                                              `update_date`	timestamp	NULL	COMMENT '수정일시',
                                              `user_id`	bigint	NOT NULL	COMMENT '수정한 회원 아이디',
@@ -312,3 +314,9 @@ ALTER TABLE `tb_user_log` ADD CONSTRAINT `FK_tb_user_TO_tb_user_log_1` FOREIGN K
                           `id`
         );
 
+ALTER TABLE `tb_category` ADD CONSTRAINT `FK_tb_user_TO_tb_category` FOREIGN KEY (
+                                                                                  `user_id`
+    )
+    REFERENCES `tb_user` (
+                          `id`
+        );
