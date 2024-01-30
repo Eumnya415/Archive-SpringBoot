@@ -1,64 +1,34 @@
 USE archive;
 
-DROP TABLE IF EXISTS `tb_image`;
+-- DROP TABLE IF EXISTS `tb_user_log`;
+-- DROP TABLE IF EXISTS `tb_recommendation_content`;
+-- DROP TABLE IF EXISTS `tb_recommendation`;
+-- DROP TABLE IF EXISTS `tb_keyword_recommendation`;
+-- DROP TABLE IF EXISTS `tb_user_role`;
+-- DROP TABLE IF EXISTS `tb_post_log`;
+-- DROP TABLE IF EXISTS `tb_download_log`;
+-- DROP TABLE IF EXISTS `tb_content_category`;
+-- DROP TABLE IF EXISTS `tb_notice`;
+-- DROP TABLE IF EXISTS `tb_access_log`;
+-- DROP TABLE IF EXISTS `tb_category`;
+-- DROP TABLE IF EXISTS `tb_image`;
+-- DROP TABLE IF EXISTS `tb_content`;
+-- DROP TABLE IF EXISTS `tb_user`;
 
-CREATE TABLE `tb_image` (
-                            `id`	bigint auto_increment	NOT NULL,
-                            `content_id`	bigint	NOT NULL,
-                            `extension`	varchar(255)	NOT NULL,
-                            `original_name`	varchar(255)	NOT NULL,
-                            `saved_name`	varchar(255)	NOT NULL,
-                            `thumb_name`	varchar(255)	NOT NULL,
-                            `original_path`	varchar(255)	NOT NULL,
-                            `saved_path`	varchar(255)	NOT NULL,
-                            `thumb_path`	varchar(255)	NOT NULL,
-                            CONSTRAINT `PK_TB_IMAGE` PRIMARY KEY (`id`)
+CREATE TABLE `tb_user` (
+                           `id`	bigint auto_increment	NOT NULL,
+                           `userid`	varchar(50)	NOT NULL,
+                           `password`	varchar(255)	NOT NULL,
+                           `name`	varchar(20)	NOT NULL,
+                           `email`	varchar(100)	NOT NULL,
+                           `phone`	varchar(20)	NULL,
+                           `register_date`	timestamp	NOT NULL	DEFAULT now(),
+                           `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
+                           `update_date`	timestamp	NULL	DEFAULT null,
+                           `delete_flag`	tinyint	NULL	DEFAULT 0	COMMENT '삭제 1, 삭제없음 0',
+                           `delete_date`	timestamp	NULL	DEFAULT null,
+                           CONSTRAINT `PK_TB_USER` PRIMARY KEY (`id`)
 );
-
-DROP TABLE IF EXISTS `tb_category`;
-
-CREATE TABLE `tb_category` (
-                               `id`	bigint auto_increment	NOT NULL	COMMENT '카테고리 아이디',
-                               `parent_id`	bigint	NULL	COMMENT '상위 카테고리 아이디',
-                               `name`	varchar(255)	NOT NULL	COMMENT '카테고리 이름',
-                               `show_flag`	tinyint	NOT NULL	DEFAULT 1	COMMENT '사용 1, 미사용 0',
-                               `depth`	int	NOT NULL	DEFAULT 1	COMMENT '깊이',
-                               `orders`	int	NOT NULL	DEFAULT 1	COMMENT '같은 깊이 내 순서',
-                               `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
-                               `update_date`	timestamp	NULL	COMMENT '수정일시',
-                               `user_id`	bigint	NULL	COMMENT '수정한 회원 아이디',
-                               CONSTRAINT `PK_TB_CATEGORY` PRIMARY KEY (`id`)
-);
-
-DROP TABLE IF EXISTS `tb_access_log`;
-
-CREATE TABLE `tb_access_log` (
-                                 `id`	bigint auto_increment	NOT NULL,
-                                 `user_id`	bigint	NOT NULL,
-                                 `login_flag`	tinyint	NULL	DEFAULT 1	COMMENT '성공 1, 실패 0',
-                                 `log_timestamp`	timestamp	NOT NULL,
-                                 CONSTRAINT `PK_TB_ACCESS_LOG` PRIMARY KEY (`id`)
-);
-
-DROP TABLE IF EXISTS `tb_notice`;
-
-CREATE TABLE `tb_notice` (
-                             `id`	bigint auto_increment	NOT NULL,
-                             `user_id`	bigint	NOT NULL,
-                             `title`	varchar(255)	NOT NULL,
-                             `content`	text	NOT NULL,
-                             `views`	int	NOT NULL	DEFAULT 0,
-                             `register_date`	timestamp	NOT NULL	DEFAULT now(),
-                             `pinned`	tinyint	NULL	DEFAULT 0	COMMENT '고정 1, 기본값 0',
-                             `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
-                             `update_date`	timestamp	NULL	DEFAULT null,
-                             `update_user_id`	bigint	NOT NULL,
-                             `delete_flag`	tinyint	NULL	DEFAULT 0	COMMENT '삭제 1, 삭제없음 0',
-                             `delete_date`	datetime	NULL	DEFAULT null,
-                             CONSTRAINT `PK_TB_NOTICE` PRIMARY KEY (`id`)
-);
-
-DROP TABLE IF EXISTS `tb_content`;
 
 CREATE TABLE `tb_content` (
                               `id`	bigint auto_increment	NOT NULL,
@@ -79,7 +49,58 @@ CREATE TABLE `tb_content` (
                               CONSTRAINT `PK_TB_CONTENT` PRIMARY KEY (`id`)
 );
 
-DROP TABLE IF EXISTS `tb_content_category`;
+
+CREATE TABLE `tb_image` (
+                            `id`	bigint auto_increment	NOT NULL,
+                            `content_id`	bigint	NOT NULL,
+                            `extension`	varchar(255)	NOT NULL,
+                            `original_name`	varchar(255)	NOT NULL,
+                            `saved_name`	varchar(255)	NOT NULL,
+                            `thumb_name`	varchar(255)	NOT NULL,
+                            `original_path`	varchar(255)	NOT NULL,
+                            `saved_path`	varchar(255)	NOT NULL,
+                            `thumb_path`	varchar(255)	NOT NULL,
+                            CONSTRAINT `PK_TB_IMAGE` PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `tb_category` (
+                               `id`	bigint auto_increment	NOT NULL	COMMENT '카테고리 아이디',
+                               `parent_id`	bigint	NULL	COMMENT '상위 카테고리 아이디',
+                               `name`	varchar(255)	NOT NULL	COMMENT '카테고리 이름',
+                               `show_flag`	tinyint	NOT NULL	DEFAULT 1	COMMENT '사용 1, 미사용 0',
+                               `depth`	int	NOT NULL	DEFAULT 1	COMMENT '깊이',
+                               `orders`	int	NOT NULL	DEFAULT 1	COMMENT '같은 깊이 내 순서',
+                               `register_date`	timestamp	NULL	COMMENT '등록일시',
+                               `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
+                               `update_date`	timestamp	NULL	COMMENT '수정일시',
+                               `user_id`	bigint	NULL	COMMENT '마지막 수정한 회원 아이디',
+                               CONSTRAINT `PK_TB_CATEGORY` PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `tb_access_log` (
+                                 `id`	bigint auto_increment	NOT NULL,
+                                 `user_id`	bigint	NOT NULL,
+                                 `login_flag`	tinyint	NULL	DEFAULT 1	COMMENT '성공 1, 실패 0',
+                                 `log_timestamp`	timestamp	NOT NULL,
+                                 CONSTRAINT `PK_TB_ACCESS_LOG` PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `tb_notice` (
+                             `id`	bigint auto_increment	NOT NULL,
+                             `user_id`	bigint	NOT NULL,
+                             `title`	varchar(255)	NOT NULL,
+                             `content`	text	NOT NULL,
+                             `views`	int	NOT NULL	DEFAULT 0,
+                             `register_date`	timestamp	NOT NULL	DEFAULT now(),
+                             `pinned`	tinyint	NULL	DEFAULT 0	COMMENT '고정 1, 기본값 0',
+                             `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
+                             `update_date`	timestamp	NULL	DEFAULT null,
+                             `update_user_id`	bigint	NOT NULL,
+                             `delete_flag`	tinyint	NULL	DEFAULT 0	COMMENT '삭제 1, 삭제없음 0',
+                             `delete_date`	datetime	NULL	DEFAULT null,
+                             CONSTRAINT `PK_TB_NOTICE` PRIMARY KEY (`id`)
+);
+
 
 CREATE TABLE `tb_content_category` (
                                        `id`	bigint auto_increment	NOT NULL	COMMENT '콘텐츠_카테고리 아이디',
@@ -87,8 +108,6 @@ CREATE TABLE `tb_content_category` (
                                        `content_id`	bigint	NOT NULL	COMMENT '콘텐츠 아이디',
                                        CONSTRAINT `PK_TB_CONTENT_CATEGORY` PRIMARY KEY (`id`)
 );
-
-DROP TABLE IF EXISTS `tb_download_log`;
 
 CREATE TABLE `tb_download_log` (
                                    `id`	bigint auto_increment	NOT NULL,
@@ -98,8 +117,6 @@ CREATE TABLE `tb_download_log` (
                                    CONSTRAINT `PK_TB_DOWNLOAD_LOG` PRIMARY KEY (`id`)
 );
 
-DROP TABLE IF EXISTS `tb_post_log`;
-
 CREATE TABLE `tb_post_log` (
                                `id`	bigint auto_increment	NOT NULL,
                                `user_id`	bigint	NOT NULL,
@@ -108,24 +125,6 @@ CREATE TABLE `tb_post_log` (
                                CONSTRAINT `PK_TB_POST_LOG` PRIMARY KEY (`id`)
 );
 
-DROP TABLE IF EXISTS `tb_user`;
-
-CREATE TABLE `tb_user` (
-                           `id`	bigint auto_increment	NOT NULL,
-                           `userid`	varchar(50)	NOT NULL,
-                           `password`	varchar(255)	NOT NULL,
-                           `name`	varchar(20)	NOT NULL,
-                           `email`	varchar(100)	NOT NULL,
-                           `phone`	varchar(20)	NULL,
-                           `register_date`	timestamp	NOT NULL	DEFAULT now(),
-                           `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
-                           `update_date`	timestamp	NULL	DEFAULT null,
-                           `delete_flag`	tinyint	NULL	DEFAULT 0	COMMENT '삭제 1, 삭제없음 0',
-                           `delete_date`	timestamp	NULL	DEFAULT null,
-                           CONSTRAINT `PK_TB_USER` PRIMARY KEY (`id`)
-);
-
-DROP TABLE IF EXISTS `tb_user_role`;
 
 CREATE TABLE `tb_user_role` (
                                 `id`	bigint auto_increment	NOT NULL,
@@ -133,8 +132,6 @@ CREATE TABLE `tb_user_role` (
                                 `role`	varchar(30)	NOT NULL	DEFAULT 'ROLE_USER'	COMMENT 'ROLE_STAFF, ROLE_ADMIN, DISABLED',
                                 CONSTRAINT `PK_TB_USER_ROLE` PRIMARY KEY (`id`)
 );
-
-DROP TABLE IF EXISTS `tb_keyword_recommendation`;
 
 CREATE TABLE `tb_keyword_recommendation` (
                                              `id`	bigint auto_increment	NOT NULL	COMMENT '추천 키워드 아이디',
@@ -147,8 +144,6 @@ CREATE TABLE `tb_keyword_recommendation` (
                                              CONSTRAINT `PK_TB_KEYWORD_RECOMMENDATION` PRIMARY KEY (`id`)
 );
 
-DROP TABLE IF EXISTS `tb_recommendation`;
-
 CREATE TABLE `tb_recommendation` (
                                      `id`	bigint auto_increment	NOT NULL	COMMENT '추천 큐레이팅 아이디',
                                      `search_keyword`	varchar(255)	NOT NULL	COMMENT '추천 문구의 전체보기 선택 시, 검색될 키워드. (예) 겨울, 새해',
@@ -159,8 +154,6 @@ CREATE TABLE `tb_recommendation` (
                                      CONSTRAINT `PK_TB_RECOMMENDATION` PRIMARY KEY (`id`)
 );
 
-DROP TABLE IF EXISTS `tb_recommendation_content`;
-
 CREATE TABLE `tb_recommendation_content` (
                                              `id`	bigint auto_increment	NOT NULL	COMMENT '콘텐츠_추천큐레이팅 아이디',
                                              `user_id`	bigint	NOT NULL	COMMENT '승인한 회원 아이디',
@@ -168,8 +161,6 @@ CREATE TABLE `tb_recommendation_content` (
                                              `recommendation_id`	bigint	NOT NULL	COMMENT '추천 큐레이팅 아이디',
                                              CONSTRAINT `PK_TB_RECOMMENDATION_CONTENT` PRIMARY KEY (`id`)
 );
-
-DROP TABLE IF EXISTS `tb_user_log`;
 
 CREATE TABLE `tb_user_log` (
                                `user_id`	bigint	NOT NULL,
