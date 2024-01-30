@@ -9,6 +9,11 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @ToString
+
+/**
+ * 공지사항 DTO
+ */
+
 public class NoticeDTO {
     private Long id;                   // 공지사항 아이디
     private Long userId;               // 공지사항 작성자 아이디

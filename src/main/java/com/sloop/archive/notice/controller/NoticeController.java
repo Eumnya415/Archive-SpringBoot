@@ -1,3 +1,7 @@
+/**
+ * 공지사항 컨트롤러
+ */
+
 package com.sloop.archive.notice.controller;
 
 import com.sloop.archive.notice.domain.NoticeDTO;
@@ -22,9 +26,9 @@ public class NoticeController {
     // 공지사항 목록 조회
     @GetMapping("/list")
     public String getNoticeList(Model model) {
-        List<NoticeDTO> noticeList = noticeService.getAllNotice();
+        List<NoticeDTO> noticeList = noticeService.getAllNoticePinnedFirst();
         model.addAttribute("noticeList", noticeList);
-        log.info("Notice list viewed"); // 로그 기록 추가
+        log.info("Notice list with pinned items viewed"); // 로그 기록 추가
         return "list";
     }
 
