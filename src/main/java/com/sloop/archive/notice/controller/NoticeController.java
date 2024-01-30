@@ -35,12 +35,12 @@ public class NoticeController {
      * @param model 공지사항 목록이 추가되는 Spring MVC Model
      * @return /notice/list
      */
-    @GetMapping("/list")
+    @GetMapping("list")
     public String getNoticeList(Model model) {
         List<NoticeDTO> noticeList = noticeService.getAllNoticePinnedFirst();
         model.addAttribute("noticeList", noticeList);
         log.info("Notice list with pinned items viewed"); // 로그 기록 추가
-        return "list";
+        return "notice/list";
     }
 
 
@@ -51,12 +51,12 @@ public class NoticeController {
      * @param model 공지사항이 추가되는 모델
      * @return /notice/detail
      */
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public String getNotice(@PathVariable Long id, Model model) {
         NoticeDTO notice = noticeService.getNoticeById(id);
         model.addAttribute("notice", notice);
         log.info("Viewing notice with id: {}", id); // 로그 기록 추가
-        return "detail";
+        return "notice/detail";
     }
 
 
@@ -65,9 +65,9 @@ public class NoticeController {
      * 공지사항을 등록하는 폼 페이지를 반환한다.
      * @return 공지사항 등록 폼 페이지 (/notice/create)
      */
-    @GetMapping("/create")
+    @GetMapping("create")
     public String createNoticeForm() {
-        return "create";
+        return "notice/create";
     }
 
 
@@ -77,7 +77,7 @@ public class NoticeController {
      * @param noticeDTO 등록할 공지사항 정보
      * @return 공지사항 목록 페이지로의 리다이렉트 (/notice/list)
      */
-    @PostMapping("/create")
+    @PostMapping("create")
     public String createNotice(@ModelAttribute NoticeDTO noticeDTO) {
         noticeService.createNotice(noticeDTO);
         log.info("New notice created: {}", noticeDTO.getTitle()); // 로그 기록 추가
@@ -92,11 +92,11 @@ public class NoticeController {
      * @param model 공지사항이 추가되는 모델
      * @return 공지사항 수정 폼 페이지 (/notice/update)
      */
-    @GetMapping("/update/{id}")
+    @GetMapping("update/{id}")
     public String updateNoticeForm(@PathVariable Long id, Model model) {
         NoticeDTO notice = noticeService.getNoticeById(id);
         model.addAttribute("notice", notice);
-        return "update";
+        return "notice/update";
     }
 
 
@@ -108,7 +108,7 @@ public class NoticeController {
      * @param redirectAttrs 리다이렉트 시 추가할 속성
      * @return 공지사항 목록 페이지로의 리다이렉트, 또는 오류 발생 시 수정 페이지로의 리다이렉트
      */
-    @PostMapping("/update/{id}")
+    @PostMapping("update/{id}")
     public String updateNotice(@PathVariable Long id, @ModelAttribute NoticeDTO noticeDTO, RedirectAttributes redirectAttrs) {
         Logger log = LoggerFactory.getLogger(NoticeController.class); // Logger 인스턴스 생성
         try {
@@ -135,7 +135,7 @@ public class NoticeController {
      * @param id 삭제할 공지사항의 ID
      * @return 공지사항 목록 페이지로의 리다이렉트 (/notice/list)
      */
-    @PostMapping("/delete/{id}")
+    @PostMapping("delete/{id}")
     public String deleteNotice(@PathVariable Long id) {
         noticeService.deleteNotice(id);
         log.info("Notice with id {} deleted", id); // 로그 기록 추가
