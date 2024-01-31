@@ -302,4 +302,3 @@ ALTER TABLE `tb_user_log` ADD CONSTRAINT `FK_tb_user_TO_tb_user_log_1` FOREIGN K
     REFERENCES `tb_user` (
                           `id`
         );
-
