@@ -1,0 +1,47 @@
+server:
+  port: 8094
+  tomcat:
+    max-http-form-post-size: 1000MB
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+
+  # jsp setting
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+
+  # live reload setting - auto reload
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+    thymeleaf:
+      cache: false
+
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 0B
+      max-file-size: 5MB
+      max-request-size: 10MB
+      location: E:\upload\temp\bootS3
+
+
+mybatis:
+  mapper-locations: mappers/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    org.springframwork.web : debug
+    sql : off
+    jdbc : off
+    jdbc.sqlonly : debug
+
+
