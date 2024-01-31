@@ -2,6 +2,7 @@ package com.sloop.archive.notice.service;
 
 import com.sloop.archive.notice.domain.NoticeDTO;
 import com.sloop.archive.notice.mapper.NoticeMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -12,6 +13,7 @@ public class NoticeService {
 
     private final NoticeMapper noticeMapper;
 
+    @Autowired
     public NoticeService(NoticeMapper noticeMapper) {
         this.noticeMapper = noticeMapper;
     }
