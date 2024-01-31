@@ -20,7 +20,7 @@
     <input type="text" id="title" name="title" value="${notice.title}"><br>
     <label for="content">내용:</label>
     <textarea id="content" name="content">${notice.content}</textarea><br>
-    <label for="pinned">[중요]</label>
+    <label for="pinned">중요</label>
     <input type="checkbox" id="pinned" name="pinned" ${notice.pinned ? 'checked' : ''}><br>
     <input type="submit" value="공지사항 수정">
 </form>

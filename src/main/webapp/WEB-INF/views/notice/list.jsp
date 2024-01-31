@@ -71,6 +71,9 @@
             </div>
         </div>
     </div>
+
+
+
     <div class="container">
         <div class="inner">
             <div class="table-cnt">
@@ -81,7 +84,7 @@
                 <div class="table-type01">
                     <div class="table-top">
                         <div class="select-box">
-                            <span>총 <em>00</em>개의 게시물이 있습니다.</span>
+                            <span>총 <em>${totalPages * 10}</em>개의 게시물이 있습니다.</span>
                             <select name="" id="">
                                 <option value="">10개 보기</option>
                                 <option value="">30개 보기</option>
@@ -89,7 +92,7 @@
                             </select>
                         </div>
                         <div class="btn-wrap">
-                            <button type="button" class="pop-btn btn w90" data-pop="registration-pop">등록</button>
+                            <button type="button" class="pop-btn btn w90" onclick="location.href='/notice/saveForm'">등록</button>
                         </div>
                     </div>
                     <table>
@@ -110,77 +113,38 @@
                         </thead>
 
                         <tbody>
-                        <tr>
-                            <td>중요</td>
-                            <td>[중요] 이번주 공지입니다.</td>
-                            <td>2024.01.01.</td>
-                            <td>10</td>
-                        </tr>
-                        <tr>
-                            <td>중요</td>
-                            <td>[중요] 이번주 공지입니다.</td>
-                            <td>2024.01.01.</td>
-                            <td>9</td>
-                        </tr>
-                        <tr>
-                            <td>중요</td>
-                            <td>[중요] 다음주 공지입니다.</td>
-                            <td>2024.01.01.</td>
-                            <td>8</td>
-                        </tr>
-                        <tr>
-                            <td>중요</td>
-                            <td>[중요] 이번달 공지입니다.</td>
-                            <td>2024.01.01.</td>
-                            <td>7</td>
-                        </tr>
-                        <tr>
-                            <td>중요</td>
-                            <td>[중요] 다음달 공지입니다.</td>
-                            <td>2024.01.01.</td>
-                            <td>6</td>
-                        </tr>
-                        <tr>
-                            <td>일반</td>
-                            <td>일반 공지입니다.</td>
-                            <td>2024.01.01.</td>
-                            <td>5</td>
-                        </tr>
-                        <tr>
-                            <td>일반</td>
-                            <td>일반 공지입니다.</td>
-                            <td>2024.01.01.</td>
-                            <td>4</td>
-                        </tr>
-                        <tr>
-                            <td>일반</td>
-                            <td>일반 공지입니다.</td>
-                            <td>2024.01.01.</td>
-                            <td>3</td>
-                        </tr>
+                        <c:forEach items="${noticeList}" var="notice">
+                            <tr>
+                                <td>
+                                    <c:if test="${notice.pinned}">
+                                        <strong>중요</strong>
+                                    </c:if>
+                                </td>
+                                <td>
+                                    <c:if test="${notice.pinned}">
+                                        <strong>[중요]</strong>
+                                    </c:if>
+                                        ${notice.title}
+                                </td>
+                                <td>${notice.registerDate}</td>
+                                <td>${notice.views}</td>
+                            </tr>
+                        </c:forEach>
                         </tbody>
                     </table>
+
                     <div class="paging-wrap">
                         <a href="javascript:;" class="first"></a>
                         <a href="javascript:;" class="prev"></a>
-                        <a href="javascript:;" class="page active">
-                            <span>1</span>
-                        </a>
-                        <a href="javascript:;" class="page">
-                            <span>2</span>
-                        </a>
-                        <a href="javascript:;" class="page">
-                            <span>3</span>
-                        </a>
-                        <a href="javascript:;" class="page">
-                            <span>4</span>
-                        </a>
-                        <a href="javascript:;" class="page">
-                            <span>5</span>
-                        </a>
+                        <c:forEach begin="1" end="${totalPages}" varStatus="loop">
+                            <a href="javascript:;" class="page ${loop.index == 1 ? 'active' : ''}">
+                                <span>${loop.index}</span>
+                            </a>
+                        </c:forEach>
                         <a href="javascript:;" class="next"></a>
                         <a href="javascript:;" class="last"></a>
                     </div>
+
                 </div>
             </div>
         </div>
