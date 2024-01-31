@@ -98,15 +98,15 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# ignore resources
-admin.css
-admin.js
-reset.css
-jquery.js
-CookieUtil.js
-DateUtil.js
-**/images/admin/
-archive_*.jsp
+## ignore resources
+#admin.css
+#admin.js
+#reset.css
+#jquery.js
+#CookieUtil.js
+#DateUtil.js
+#**/images/admin/
+#archive_*.jsp
 
 # 김지원
 
