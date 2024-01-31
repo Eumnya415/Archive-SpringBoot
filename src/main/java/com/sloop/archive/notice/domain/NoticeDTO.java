@@ -20,7 +20,7 @@ public class NoticeDTO {
     private String title;              // 공지사항 제목
     private String content;            // 공지사항 내용 (text)
     private int views;                 // 공지사항 조회수
-    private Timestamp registDate;      // 공지사항 등록 일시
+    private Timestamp registerDate;      // 공지사항 등록 일시
     private Boolean pinned;            // 공지사항 상단 고정 여부. 고정 1, 기본값 0
     private Boolean updateFlag;        // 공지사항 수정 여부. 수정 1, 수정없음 0
     private Timestamp updateDate;      // 공지사항 수정 일시

@@ -13,9 +13,9 @@ public interface NoticeMapper {
     @Select("SELECT * FROM tb_notice WHERE id = #{id} AND delete_flag = 0")
     NoticeDTO getNoticeById(Long id);
 
-    @Insert("INSERT INTO tb_notice (user_id, title, content, views, regist_date, pinned) VALUES (#{userId}, #{title}, #{content}, #{views}, #{regist_date}, #{pinned})")
+    @Insert("INSERT INTO tb_notice (user_id, title, content, views, register_date, pinned) VALUES (#{userId}, #{title}, #{content}, #{views}, #{register_date}, #{pinned})")
     @Options(useGeneratedKeys = true, keyProperty = "id")
-    void insertNotice(NoticeDTO notice);
+    void saveNotice(NoticeDTO notice);
 
     @Update("UPDATE tb_notice SET title = #{title}, content = #{content}, update_date = CURRENT_TIMESTAMP, update_flag = 1 WHERE id = #{id}")
     void updateNotice(NoticeDTO notice);
