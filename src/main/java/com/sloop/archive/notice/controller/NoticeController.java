@@ -7,6 +7,8 @@ package com.sloop.archive.notice.controller;
 import com.sloop.archive.notice.domain.NoticeDTO;
 import com.sloop.archive.notice.service.NoticeService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
@@ -81,7 +83,7 @@ public class NoticeController {
     @PostMapping("/save")
     public String saveNotice(@ModelAttribute NoticeDTO noticeDTO) {
         noticeService.saveNotice(noticeDTO);
-        log.info("공지사항 작성"); // 로그 기록 추가
+        log.info("공지사항 등록"); // 로그 기록 추가
         return "redirect:/notice/list";
     }
 
@@ -105,5 +107,4 @@ public class NoticeController {
         log.info("공지사항 삭제"); // 로그 기록 추가
         return "redirect:/notice/list";
     }
-
 }
