@@ -46,11 +46,21 @@ public class NoticeService {
         return noticeMapper.getNoticeById(id);
     }
 
-    public void saveNotice(NoticeDTO notice) {
+    public void saveNotice(NoticeDTO notice) throws Exception {
+        if (notice.getTitle() == null || notice.getTitle().trim().equals("") ||
+                notice.getContent() == null || notice.getContent().trim().equals("")) {
+            throw new Exception("제목과 내용은 모두 작성해야 합니다.");
+        }
+
         noticeMapper.saveNotice(notice);
     }
 
-    public void updateNotice(NoticeDTO notice) {
+    public void updateNotice(NoticeDTO notice) throws Exception {
+        if (notice.getTitle() == null || notice.getTitle().trim().equals("") ||
+                notice.getContent() == null || notice.getContent().trim().equals("")) {
+            throw new Exception("제목과 내용은 모두 작성해야 합니다.");
+        }
+
         noticeMapper.updateNotice(notice);
     }
 

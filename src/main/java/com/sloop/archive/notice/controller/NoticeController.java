@@ -61,6 +61,7 @@ public class NoticeController {
         model.addAttribute("notice", notice);
         return "notice/view";
     }
+
     @GetMapping("/saveForm")
     public String showNoticeForm(Model model) {
         model.addAttribute("notice", new NoticeDTO());
@@ -68,10 +69,15 @@ public class NoticeController {
     }
 
     @PostMapping("/save")
-    public String saveNotice(@ModelAttribute NoticeDTO noticeDTO) {
-        noticeService.saveNotice(noticeDTO);
-        log.info("공지사항 등록"); // 로그 기록 추가
-        return "redirect:/notice/list";
+    public String saveNotice(NoticeDTO notice, Model model) {
+        try {
+            noticeService.saveNotice(notice);
+            return "redirect:/notice/list";  // 글 작성 성공 시 공지사항 목록 페이지로 리다이렉트
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("notice", notice);
+            return "notice/save";  // 글 작성 실패 시 다시 글 작성 페이지로 이동
+        }
     }
 
     @GetMapping("/update/{id}")
@@ -79,13 +85,16 @@ public class NoticeController {
         model.addAttribute("notice", noticeService.getNoticeById(id));
         return "notice/update";
     }
-
     @PostMapping("/update/{id}")
-    public String updateNotice(@ModelAttribute NoticeDTO noticeDTO, @PathVariable("id") Long id) {
-        noticeDTO.setId(id);
-        noticeService.updateNotice(noticeDTO);
-        log.info("공지사항 수정"); // 로그 기록 추가
-        return "redirect:/notice/view/" + id;
+    public String updateNotice(@PathVariable("id") Long id, NoticeDTO notice, Model model) {
+        try {
+            noticeService.updateNotice(notice);
+            return "redirect:/notice/list";  // 글 수정 성공 시 공지사항 목록 페이지로 리다이렉트
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("notice", notice);
+            return "notice/update";  // 글 수정 실패 시 다시 글 수정 페이지로 이동
+        }
     }
 
     @PostMapping("/delete/{id}")

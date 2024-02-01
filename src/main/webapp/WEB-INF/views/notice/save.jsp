@@ -16,17 +16,23 @@
     <label for="normal">일반</label>
     <input type="radio" id="normal" name="pinned" value="false" checked><br>
 
-<%--    <label for="pinned">중요</label>--%>
-<%--    <input type="radio" id="pinned" name="noticeType" value="pinned" ${notice.pinned ? 'checked' : ''}>--%>
-<%--    <label for="normal">일반</label>--%>
-<%--    <input type="radio" id="normal" name="noticeType" value="normal" ${!notice.pinned ? 'checked' : ''}><br>--%>
     <input type="submit" value="공지사항 등록">
 </form>
 <script>
     function confirmSubmit() {
-        if (confirm('작성 되었습니다.')) {
+        var title = document.getElementById('title').value;
+        var content = document.getElementById('content').value;
+
+        if (title.trim() === "" || content.trim() === "") {
+            alert('제목과 내용은 모두 작성해야 합니다.');
+            return false;
+        }
+
+        if (confirm('등록하시겠습니까?')) {
+            alert('등록되었습니다.');
             return true;
         } else {
+            alert('등록이 취소되었습니다.');
             return false;
         }
     }
