@@ -111,9 +111,14 @@
                         <c:forEach items="${noticeList}" var="notice">
                             <tr>
                                 <td>
-                                    <c:if test="${notice.pinned}">
-                                        <strong>중요</strong>
-                                    </c:if>
+                                    <c:choose>
+                                        <c:when test="${notice.pinned}">
+                                            <strong>중요</strong>
+                                        </c:when>
+                                        <c:otherwise>
+                                            ${notice.id}
+                                        </c:otherwise>
+                                    </c:choose>
                                 </td>
                                 <td>
                                     <c:if test="${notice.pinned}">
