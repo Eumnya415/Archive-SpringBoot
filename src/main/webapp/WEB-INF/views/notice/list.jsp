@@ -84,12 +84,7 @@
                 <div class="table-type01">
                     <div class="table-top">
                         <div class="select-box">
-                            <span>총 <em>${totalPages * 10}</em>개의 게시물이 있습니다.</span>
-                            <select name="" id="">
-                                <option value="">10개 보기</option>
-                                <option value="">30개 보기</option>
-                                <option value="">50개 보기</option>
-                            </select>
+                            <span>총 <em>${totalPostCount}</em>개의 게시물이 있습니다.</span>
                         </div>
                         <div class="btn-wrap">
                             <button type="button" class="pop-btn btn w90" onclick="location.href='/notice/saveForm'">등록</button>
@@ -124,7 +119,7 @@
                                     <c:if test="${notice.pinned}">
                                         <strong>[중요]</strong>
                                     </c:if>
-                                        ${notice.title}
+                                    <a href="/notice/view/${notice.id}">${notice.title}</a>
                                 </td>
                                 <td>${notice.registerDate}</td>
                                 <td>${notice.views}</td>
@@ -134,15 +129,15 @@
                     </table>
 
                     <div class="paging-wrap">
-                        <a href="javascript:;" class="first"></a>
-                        <a href="javascript:;" class="prev"></a>
+                        <a href="/notice/list?page=1" class="first"></a>
+                        <a href="/notice/list?page=${currentPage - 1 > 0 ? currentPage - 1 : 1}" class="prev"></a>
                         <c:forEach begin="1" end="${totalPages}" varStatus="loop">
-                            <a href="javascript:;" class="page ${loop.index == 1 ? 'active' : ''}">
+                            <a href="/notice/list?page=${loop.index}" class="page ${loop.index == currentPage ? 'active' : ''}">
                                 <span>${loop.index}</span>
                             </a>
                         </c:forEach>
-                        <a href="javascript:;" class="next"></a>
-                        <a href="javascript:;" class="last"></a>
+                        <a href="/notice/list?page=${currentPage + 1 <= totalPages ? currentPage + 1 : totalPages}" class="next"></a>
+                        <a href="/notice/list?page=${totalPages}" class="last"></a>
                     </div>
 
                 </div>

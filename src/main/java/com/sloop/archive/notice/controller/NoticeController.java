@@ -30,50 +30,42 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
-    //공지사항 목록 조회
-    /**
-     * 공지사항 목록을 가져와서 Spring MVC Model에 추가한 뒤, 공지사항 목록 페이지에 반환한다.
-     * 중요 공지사항은 목록 상단에 먼저 표시된다.
-     * @param model 공지사항 목록이 추가되는 Spring MVC Model
-     * @return /notice/list
-     */
     @GetMapping("/list")
     public String getAllNoticePinnedFirst(Model model, @RequestParam(defaultValue = "1") int page) {
         int pageSize = 10; // 페이지 당 게시글 수
         int totalCount = noticeService.getTotalCount(); // 전체 게시글 수
 
         // 페이징 처리를 위한 계산
-        int start = (page - 1) * pageSize;
         int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+        if (page < 1) {
+            page = 1;
+        } else if (page > totalPages) {
+            page = totalPages;
+        }
+        int start = (page - 1) * pageSize;
 
-        List<NoticeDTO> noticeList = noticeService.getAllNoticePinnedFirst(start, pageSize);
+        List<NoticeDTO> noticeList = noticeService.getNoticeList(start, pageSize);
 
         model.addAttribute("noticeList", noticeList);
         model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPostCount", totalCount); // 총 게시물 수 추가
 
         log.info("공지사항 목록 조회"); // 로그 기록 추가
         return "notice/list";
-
-//        model.addAttribute("noticeList", noticeService.getNoticePinnedFirst());
-
     }
-
-
-    // 공지사항 상세 조회
-    /**
-     * 특정 ID의 공지사항을 조회하고, 이를 모델에 추가한 뒤 상세 페이지를 반환한다.
-     * @param id 조회할 공지사항의 ID
-     * @param model 공지사항이 추가되는 모델
-     * @return /notice/detail
-     */
-    @GetMapping("/view/{id}")
-    public String getNoticeById(@PathVariable Long id, Model model) {
+    @GetMapping("/get/{id}")
+    public String getNoticeById(@PathVariable("id") Long id, Model model) {
         model.addAttribute("notice", noticeService.getNoticeById(id));
         log.info("공지사항 상세 조회"); // 로그 기록 추가
         return "notice/view";
     }
-
-    // 공지사항 등록 페이지
+    @GetMapping("/view/{id}")
+    public String view(@PathVariable("id") Long id, Model model) {
+        NoticeDTO notice = noticeService.getNoticeAndUpdateViews(id);
+        model.addAttribute("notice", notice);
+        return "notice/view";
+    }
     @GetMapping("/saveForm")
     public String showNoticeForm(Model model) {
         model.addAttribute("notice", new NoticeDTO());
@@ -87,18 +79,18 @@ public class NoticeController {
         return "redirect:/notice/list";
     }
 
-    // 공지사항 수정 페이지
     @GetMapping("/update/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         model.addAttribute("notice", noticeService.getNoticeById(id));
         return "notice/update";
     }
 
-    @PostMapping("/update")
-    public String updateNotice(@ModelAttribute NoticeDTO noticeDTO) {
+    @PostMapping("/update/{id}")
+    public String updateNotice(@ModelAttribute NoticeDTO noticeDTO, @PathVariable("id") Long id) {
+        noticeDTO.setId(id);
         noticeService.updateNotice(noticeDTO);
         log.info("공지사항 수정"); // 로그 기록 추가
-        return "redirect:/notice/view/" + noticeDTO.getId();
+        return "redirect:/notice/view/" + id;
     }
 
     @PostMapping("/delete/{id}")

@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -11,12 +10,16 @@
     <input type="text" id="title" name="title" value="${notice.title}"><br>
     <label for="content">내용:</label>
     <textarea id="content" name="content">${notice.content}</textarea><br>
-    <c:if test="${isAdmin}">
-        <label for="pinned">중요</label>
-        <input type="checkbox" id="pinned" name="pinned" ${notice.pinned ? 'checked' : ''}><br>
-        <label for="normal">일반</label>
-        <input type="checkbox" id="normal" name="normal"><br>
-    </c:if>
+
+    <label for="pinned">중요</label>
+    <input type="radio" id="pinned" name="pinned" value="true">
+    <label for="normal">일반</label>
+    <input type="radio" id="normal" name="pinned" value="false" checked><br>
+
+<%--    <label for="pinned">중요</label>--%>
+<%--    <input type="radio" id="pinned" name="noticeType" value="pinned" ${notice.pinned ? 'checked' : ''}>--%>
+<%--    <label for="normal">일반</label>--%>
+<%--    <input type="radio" id="normal" name="noticeType" value="normal" ${!notice.pinned ? 'checked' : ''}><br>--%>
     <input type="submit" value="공지사항 등록">
 </form>
 <script>

@@ -87,7 +87,7 @@ CREATE TABLE `tb_access_log` (
 
 CREATE TABLE `tb_notice` (
                              `id`	bigint auto_increment	NOT NULL,
-                             `user_id`	bigint	NOT NULL,
+                             `user_id`	bigint	NULL,
                              `title`	varchar(255)	NOT NULL,
                              `content`	text	NOT NULL,
                              `views`	int	NOT NULL	DEFAULT 0,
@@ -95,7 +95,7 @@ CREATE TABLE `tb_notice` (
                              `pinned`	tinyint	NULL	DEFAULT 0	COMMENT '고정 1, 기본값 0',
                              `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
                              `update_date`	timestamp	NULL	DEFAULT null,
-                             `update_user_id`	bigint	NOT NULL,
+                             `update_user_id`	bigint	NULL,
                              `delete_flag`	tinyint	NULL	DEFAULT 0	COMMENT '삭제 1, 삭제없음 0',
                              `delete_date`	datetime	NULL	DEFAULT null,
                              CONSTRAINT `PK_TB_NOTICE` PRIMARY KEY (`id`)

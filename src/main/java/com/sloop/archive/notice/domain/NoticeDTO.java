@@ -25,9 +25,12 @@ public class NoticeDTO implements Comparable<NoticeDTO> {
 
     // 중요 여부에 따라 정렬을 위한 compareTo() 메서드 구현
     public int compareTo(NoticeDTO other) {
-        if (this.pinned && !other.pinned) {
+        Boolean thisPinned = this.pinned == null ? Boolean.FALSE : this.pinned;
+        Boolean otherPinned = other.pinned == null ? Boolean.FALSE : other.pinned;
+
+        if (thisPinned && !otherPinned) {
             return -1; // this가 중요글, other가 중요글이 아닌 경우 this를 앞으로 정렬
-        } else if (!this.pinned && other.pinned) {
+        } else if (!thisPinned && otherPinned) {
             return 1; // this가 중요글이 아니고, other가 중요글인 경우 other를 앞으로 정렬
         } else {
             return 0; // 두 글 모두 중요글이거나 중요글이 아닌 경우 정렬하지 않음
