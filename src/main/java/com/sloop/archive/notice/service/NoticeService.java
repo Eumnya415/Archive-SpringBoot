@@ -4,6 +4,7 @@ import com.sloop.archive.notice.domain.NoticeDTO;
 import com.sloop.archive.notice.mapper.NoticeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +20,11 @@ public class NoticeService {
     }
 
     public List<NoticeDTO> getNoticeList(int start, int pageSize) {
-        return noticeMapper.getNoticeList(start, pageSize);
+        List<NoticeDTO> pinnedNotices = noticeMapper.getNoticesPinned();
+        List<NoticeDTO> notices = noticeMapper.getNoticeList(start, pageSize);
+        notices.removeAll(pinnedNotices);
+        pinnedNotices.addAll(notices);
+        return pinnedNotices;
     }
 
     public List<NoticeDTO> getAllNoticePinnedFirst(int start, int pageSize) {
@@ -27,6 +32,13 @@ public class NoticeService {
         Collections.sort(noticeList); // 중요 여부에 따라 정렬
         return noticeList;
     }
+
+    public List<NoticeDTO> getNoticePinnedFirst(int start, int pageSize) {
+        List<NoticeDTO> noticeList = noticeMapper.getNoticePinnedFirst(start, pageSize);
+        Collections.sort(noticeList); // 중요 여부에 따라 정렬
+        return noticeList;
+    }
+
     public int getTotalCount() {
         return noticeMapper.getTotalCount();
     }
@@ -45,4 +57,11 @@ public class NoticeService {
     public void deleteNotice(Long id) {
         noticeMapper.deleteNotice(id);
     }
+
+    @Transactional
+    public NoticeDTO getNoticeAndUpdateViews(Long id) {
+        noticeMapper.increaseViews(id);
+        return noticeMapper.getNoticeById(id);
+    }
+
 }

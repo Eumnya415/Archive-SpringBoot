@@ -1,6 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>공지사항 상세</title>
@@ -22,7 +21,7 @@
             if (confirm('삭제하시겠습니까?')) {
                 var form = document.createElement('form');
                 form.method = 'post';
-                form.action = '/notice/delete/${notice.id}';
+                form.action = '/notice/delete/${noticeDTO.id}';
                 document.body.appendChild(form);
                 form.submit();
             }
@@ -33,23 +32,23 @@
 <div class="container">
     <h1>공지사항 상세</h1>
     <div>
-        <c:if test="${notice.pinned}">
-            <h2>[중요] ${notice.title}</h2>
+        <c:if test="${noticeDTO.pinned}">
+            <h2>[중요] ${noticeDTO.title}</h2>
         </c:if>
-        <c:if test="${not notice.pinned}">
-            <h2>${notice.title}</h2>
+
+        <c:if test="${not noticeDTO.pinned}">
+            <h2>${noticeDTO.title}</h2>
         </c:if>
-        <p><fmt:formatDate value="${notice.registerDate}" pattern="yyyy.MM.dd." /></p>
-        <p>${notice.content}</p>
-        <p>조회수: ${notice.views}</p>
+
+        <p>${noticeDTO.registerDate}</p>
+        <p>${noticeDTO.content}</p>
+        <p>조회수: ${noticeDTO.views}</p>
     </div>
 
     <div class="buttons">
         <a href="/notice/list">목록</a>
-        <c:if test="${isAdmin}">
-            <a href="/notice/update/${notice.id}">수정</a>
-            <button type="button" onclick="confirmDelete()">삭제</button>
-        </c:if>
+        <a href="/notice/update/${noticeDTO.id}">수정</a>
+        <button type="button" onclick="confirmDelete()">삭제</button>
     </div>
 </div>
 
