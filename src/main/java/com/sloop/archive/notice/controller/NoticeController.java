@@ -25,6 +25,21 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
+    /**
+     * 공지사항 목록을 조회하는 메서드
+     * 페이지 번호를 파라미터로 받아 해당 페이지의 공지사항 목록을 가져온다.
+     * 가져온 공지사항 목록은 Model에 추가하여 뷰 페이지에 전달한다.
+     * 이 메서드는 "/notice/list" 경로로 GET 요청이 들어올 때 호출된다.
+     *
+     * @param model 뷰 페이지에 전달할 데이터를 담는 객체
+     *              - 뷰 페이지에 전달할 데이터
+     *              "noticeList": List<NoticeDTO> noticeList - 조회한 공지사항 목록
+     *              "totalPages": int totalPages - 전체 페이지 수
+     *              "currentPage": int page - 현재 페이지 번호
+     *              "totalPostCount": int totalCount - 총 게시물 수
+     * @param page 조회할 페이지 번호
+     * @return notice/list
+     */
     @GetMapping("/list")
     public String getAllNoticePinnedFirst(Model model, @RequestParam(defaultValue = "1") int page) {
         int pageSize = 10; // 페이지 당 게시글 수
@@ -49,12 +64,34 @@ public class NoticeController {
         log.info("공지사항 목록 조회"); // 로그 기록 추가
         return "notice/list";
     }
+
+    /**
+     * 단일 공지사항을 조회하는 메서드
+     * 공지사항의 ID를 경로 변수로 받아 해당 공지사항의 정보를 가져온다.
+     * 가져온 공지사항 정보는 Model에 추가하여 뷰 페이지에 전달합니다.
+     * 이 메서드는 "/notice/get/{id}" 경로로 GET 요청이 들어올 때 호출된다.
+     *
+     * @param id 조회할 공지사항의 ID
+     * @param model 뷰 페이지에 전달할 데이터를 담는 객체
+     * @return notice/view
+     */
     @GetMapping("/get/{id}")
     public String getNoticeById(@PathVariable("id") Long id, Model model) {
         model.addAttribute("notice", noticeService.getNoticeById(id));
         log.info("공지사항 상세 조회"); // 로그 기록 추가
         return "notice/view";
     }
+
+    /**
+     * 공지사항을 조회하고 조회수를 증가시키는 메서드
+     * 공지사항의 ID를 경로 변수로 받아 해당 공지사항의 정보를 가져온 후 조회수를 증가시킨다.
+     * 조회수가 증가된 공지사항 정보는 Model에 추가하여 뷰 페이지에 전달한다.
+     * 이 메서드는 "/notice/view/{id}" 경로로 GET 요청이 들어올 때 호출된다.
+     *
+     * @param id 조회할 공지사항의 ID
+     * @param model 뷰 페이지에 전달할 데이터를 담는 객체
+     * @return notice/view
+     */
     @GetMapping("/view/{id}")
     public String view(@PathVariable("id") Long id, Model model) {
         NoticeDTO notice = noticeService.getNoticeAndUpdateViews(id);
@@ -62,12 +99,29 @@ public class NoticeController {
         return "notice/view";
     }
 
+    /**
+     * 공지사항 작성 폼을 보여주는 메서드
+     * 이 메서드는 "/notice/saveForm" 경로로 GET 요청이 들어올 때 호출된다.
+     *
+     * @param model 뷰 페이지에 전달할 데이터를 담는 객체
+     * @return notice/save
+     */
     @GetMapping("/saveForm")
     public String showNoticeForm(Model model) {
         model.addAttribute("notice", new NoticeDTO());
         log.info("공지사항 등록"); // 로그 기록 추가
         return "notice/save";
     }
+
+    /**
+     * 새로운 공지사항을 저장하는 메서드
+     * 공지사항 정보를 담은 NoticeDTO 객체를 파라미터로 받아 저장한다.
+     * 성공적으로 저장되면 공지사항 목록 페이지로 리다이렉트
+     * 이 메서드는 "/notice/save" 경로로 POST 요청이 들어올 때 호출된다.
+     *
+     * @param notice 저장할 공지사항 정보를 담은 NoticeDTO 객체
+     * @return notice/save
+     */
 
     @PostMapping("/save")
     public String saveNotice(NoticeDTO notice, Model model) {
@@ -82,12 +136,33 @@ public class NoticeController {
         }
     }
 
+    /**
+     * 공지사항 수정 폼을 보여주는 메서드
+     * 공지사항의 ID를 경로 변수로 받아 해당 공지사항의 정보를 가져온다.
+     * 가져온 공지사항 정보는 Model에 추가하여 뷰 페이지에 전달
+     * 이 메서드는 "/notice/update/{id}" 경로로 GET 요청이 들어올 때 호출된다.
+     *
+     * @param id 수정할 공지사항의 ID
+     * @param model 뷰 페이지에 전달할 데이터를 담는 객체
+     * @return notice/update
+     */
     @GetMapping("/update/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         model.addAttribute("notice", noticeService.getNoticeById(id));
         log.info("공지사항 수정"); // 로그 기록 추가
         return "notice/update";
     }
+
+    /**
+     * 공지사항을 수정하는 메서드
+     * 공지사항의 ID와 수정할 정보를 담은 NoticeDTO 객체를 파라미터로 받아 수정한다.
+     * 성공적으로 수정되면 공지사항 목록 페이지로 리다이렉트
+     * 이 메서드는 "/notice/update/{id}" 경로로 POST 요청이 들어올 때 호출된다.
+     *
+     * @param id 수정할 공지사항의 ID
+     * @param notice 수정할 정보를 담은 NoticeDTO 객체
+     * @return notice/update
+     */
     @PostMapping("/update/{id}")
     public String updateNotice(@PathVariable("id") Long id, NoticeDTO notice, Model model) {
         try {
@@ -101,6 +176,15 @@ public class NoticeController {
         }
     }
 
+    /**
+     * 공지사항을 삭제하는 메서드
+     * 공지사항의 ID를 경로 변수로 받아 해당 공지사항을 삭제
+     * 성공적으로 삭제되면 공지사항 목록 페이지로 리다이렉트
+     * 이 메서드는 "/notice/delete/{id}" 경로로 POST 요청이 들어올 때 호출된다.
+     *
+     * @param id 삭제할 공지사항의 ID
+     * @return redirect:/notice/list
+     */
     @PostMapping("/delete/{id}")
     public String deleteNotice(@PathVariable Long id) {
         noticeService.deleteNotice(id);
