@@ -19,11 +19,14 @@
     <script type="text/javascript">
         function confirmDelete() {
             if (confirm('삭제하시겠습니까?')) {
+                alert('삭제되었습니다.');
                 var form = document.createElement('form');
                 form.method = 'post';
-                form.action = '/notice/delete/${noticeDTO.id}';
+                form.action = "/notice/delete/${notice.id}";
                 document.body.appendChild(form);
                 form.submit();
+            } else {
+                alert('삭제가 취소되었습니다.');
             }
         }
     </script>
@@ -32,17 +35,17 @@
 <div class="container">
     <h1>공지사항 상세</h1>
     <div>
-        <c:if test="${noticeDTO.pinned}">
-            <h2>[중요] ${noticeDTO.title}</h2>
+        <c:if test="${notice.pinned}">
+            <h2>[중요] ${notice.title}</h2>
         </c:if>
 
-        <c:if test="${not noticeDTO.pinned}">
-            <h2>${noticeDTO.title}</h2>
+        <c:if test="${not notice.pinned}">
+            <h2>${notice.title}</h2>
         </c:if>
 
-        <p>${noticeDTO.registerDate}</p>
-        <p>${noticeDTO.content}</p>
-        <p>조회수: ${noticeDTO.views}</p>
+        <p>${notice.registerDate}</p>
+        <p>${notice.content}</p>
+        <p>조회수: ${notice.views}</p>
     </div>
 
     <div class="buttons">
