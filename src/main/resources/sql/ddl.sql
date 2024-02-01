@@ -45,7 +45,7 @@ CREATE TABLE `tb_content` (
                               `delete_flag`	tinyint	NULL	DEFAULT 0	COMMENT '삭제 1, 삭제없음 0',
                               `delete_date`	timestamp	NULL,
                               `approve_flag`	tinyint	NULL	DEFAULT 0	COMMENT '승인 1, 승인대기 0, 승인거절 2',
-                              `approve_user_id`	bigint	NOT NULL,
+                              `approve_user_id`	bigint	NULL,
                               CONSTRAINT `PK_TB_CONTENT` PRIMARY KEY (`id`)
 );
 
@@ -74,7 +74,8 @@ CREATE TABLE `tb_category` (
                                `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
                                `update_date`	timestamp	NULL	COMMENT '수정일시',
                                `user_id`	bigint	NULL	COMMENT '마지막 수정한 회원 아이디',
-                               CONSTRAINT `PK_TB_CATEGORY` PRIMARY KEY (`id`)
+                               CONSTRAINT `PK_TB_CATEGORY` PRIMARY KEY (`id`),
+                               Foreign Key (parent_id) REFERENCES tb_category(id) on delete cascade on update cascade
 );
 
 CREATE TABLE `tb_access_log` (
@@ -139,7 +140,7 @@ CREATE TABLE `tb_keyword_recommendation` (
                                              `orders`	int	NOT NULL	COMMENT '메인 노출 순서',
                                              `update_flag`	tinyint	NULL	DEFAULT 0	COMMENT '수정 1, 수정없음 0',
                                              `update_date`	timestamp	NULL	COMMENT '수정일시',
-                                             `user_id`	bigint	NOT NULL	COMMENT '수정한 회원 아이디',
+                                             `user_id`	bigint NULL	COMMENT '수정한 회원 아이디',
                                              `show_flag`	tinyint	NULL	DEFAULT 1	COMMENT '사용 1, 미사용 0',
                                              CONSTRAINT `PK_TB_KEYWORD_RECOMMENDATION` PRIMARY KEY (`id`)
 );
@@ -156,7 +157,7 @@ CREATE TABLE `tb_recommendation` (
 
 CREATE TABLE `tb_recommendation_content` (
                                              `id`	bigint auto_increment	NOT NULL	COMMENT '콘텐츠_추천큐레이팅 아이디',
-                                             `user_id`	bigint	NOT NULL	COMMENT '승인한 회원 아이디',
+                                             `user_id`	bigint NULL	COMMENT '승인한 회원 아이디',
                                              `content_id`	bigint	NOT NULL	COMMENT '콘텐츠 아이디',
                                              `recommendation_id`	bigint	NOT NULL	COMMENT '추천 큐레이팅 아이디',
                                              CONSTRAINT `PK_TB_RECOMMENDATION_CONTENT` PRIMARY KEY (`id`)
@@ -177,12 +178,6 @@ ALTER TABLE `tb_image` ADD CONSTRAINT `FK_tb_content_TO_tb_image_1` FOREIGN KEY 
                              `id`
         );
 
-ALTER TABLE `tb_category` ADD CONSTRAINT `FK_tb_category_TO_tb_category_1` FOREIGN KEY (
-                                                                                        `parent_id`
-    )
-    REFERENCES `tb_category` (
-                              `id`
-        );
 
 ALTER TABLE `tb_access_log` ADD CONSTRAINT `FK_tb_user_TO_tb_access_log_1` FOREIGN KEY (
                                                                                         `user_id`
