@@ -47,7 +47,7 @@
 
     <div class="buttons">
         <a href="/notice/list">목록</a>
-        <a href="/notice/update/${noticeDTO.id}">수정</a>
+        <a href="${contextPath}/notice/update/${notice.id}">수정</a>
         <button type="button" onclick="confirmDelete()">삭제</button>
     </div>
 </div>
