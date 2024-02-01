@@ -21,7 +21,7 @@
     </insert>
 
     <update id="updateNotice">
-        UPDATE tb_notice SET title = #{title}, content = #{content}, update_date = CURRENT_TIMESTAMP, update_flag = 1 WHERE id = #{id}
+        UPDATE tb_notice SET title = #{title}, content = #{content}, pinned = #{pinned}, update_date = CURRENT_TIMESTAMP, update_flag = 1 WHERE id = #{id}
     </update>
 
     <update id="deleteNotice">
@@ -43,6 +43,7 @@
     <select id="getAllNoticePinnedFirst" resultType="com.sloop.archive.notice.domain.NoticeDTO">
         SELECT * FROM tb_notice WHERE delete_flag = 0 ORDER BY pinned DESC, id DESC LIMIT #{start}, #{pageSize}
     </select>
+
 
 
 </mapper>
