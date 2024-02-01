@@ -65,6 +65,7 @@ public class NoticeController {
     @GetMapping("/saveForm")
     public String showNoticeForm(Model model) {
         model.addAttribute("notice", new NoticeDTO());
+        log.info("공지사항 등록"); // 로그 기록 추가
         return "notice/save";
     }
 
@@ -76,6 +77,7 @@ public class NoticeController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             model.addAttribute("notice", notice);
+            log.info("공지사항 등록"); // 로그 기록 추가
             return "notice/save";  // 글 작성 실패 시 다시 글 작성 페이지로 이동
         }
     }
@@ -83,6 +85,7 @@ public class NoticeController {
     @GetMapping("/update/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         model.addAttribute("notice", noticeService.getNoticeById(id));
+        log.info("공지사항 수정"); // 로그 기록 추가
         return "notice/update";
     }
     @PostMapping("/update/{id}")
@@ -93,6 +96,7 @@ public class NoticeController {
         } catch (Exception e) {
             model.addAttribute("errorMessage", e.getMessage());
             model.addAttribute("notice", notice);
+            log.info("공지사항 수정"); // 로그 기록 추가
             return "notice/update";  // 글 수정 실패 시 다시 글 수정 페이지로 이동
         }
     }
