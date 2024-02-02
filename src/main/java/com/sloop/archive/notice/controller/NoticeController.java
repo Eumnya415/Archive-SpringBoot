@@ -205,6 +205,7 @@ public class NoticeController {
     public String search(@RequestParam("keyword") String keyword, Model model) {
         List<NoticeDTO> noticeList = noticeService.search(keyword);
         model.addAttribute("noticeList", noticeList);
+        log.info("공지사항 게시물 검색"); // 로그 기록 추가
         return "notice/list";
     }
 }
