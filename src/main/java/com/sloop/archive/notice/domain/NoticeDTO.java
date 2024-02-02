@@ -33,7 +33,7 @@ public class NoticeDTO implements Comparable<NoticeDTO> {
         } else if (!thisPinned && otherPinned) {
             return 1; // this가 중요글이 아니고, other가 중요글인 경우 other를 앞으로 정렬
         } else {
-            return 0; // 두 글 모두 중요글이거나 중요글이 아닌 경우 정렬하지 않음
+            return this.id.compareTo(other.id); // 두 글 모두 중요글이거나 중요글이 아닌 경우 ID에 따라 오름차순 정렬
         }
     }
 }

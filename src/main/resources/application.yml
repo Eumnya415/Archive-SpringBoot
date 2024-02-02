@@ -34,7 +34,7 @@ spring:
       file-size-threshold: 0B
       max-file-size: 5MB
       max-request-size: 10MB
-      location: E:\upload\temp\bootS3
+      location: C:\uploads\temp\bootS3
 
 
 mybatis:
