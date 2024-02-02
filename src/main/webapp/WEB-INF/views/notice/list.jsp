@@ -78,8 +78,10 @@
         <div class="inner">
             <div class="table-cnt">
                 <div class="search-wrap">
-                    <input type="text">
-                    <button class="btn">검색</button>
+                    <form action="/notice/search" method="get">
+                        <input type="text" name="keyword">
+                        <button class="btn">검색</button>
+                    </form>
                 </div>
                 <div class="table-type01">
                     <div class="table-top">

@@ -294,6 +294,8 @@ label:last-child { margin-left: 16px; }
 
 .table-cnt .table-type01 td { padding: 10px 0; }
 
+.table-cnt .table-type01 td strong { font-weight: bold; color: red;}
+
 .table-cnt .table-type01.cnt-type tr:nth-child(odd) { background-color: transparent; }
 
 .table-cnt .table-type01.cnt-type th label { margin-left: 0; padding-left: 17px; }
