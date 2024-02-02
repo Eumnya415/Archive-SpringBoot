@@ -68,6 +68,10 @@ public class NoticeService {
         noticeMapper.deleteNotice(id);
     }
 
+    public List<NoticeDTO> search(String keyword) {
+        return noticeMapper.search(keyword);
+    }
+
     @Transactional
     public NoticeDTO getNoticeAndUpdateViews(Long id) {
         noticeMapper.increaseViews(id);

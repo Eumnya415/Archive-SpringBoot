@@ -191,4 +191,20 @@ public class NoticeController {
         log.info("공지사항 삭제"); // 로그 기록 추가
         return "redirect:/notice/list";
     }
+
+    /**
+     * 키워드를 통해 게시글을 검색하는 메서드
+     * 사용자로부터 입력받은 검색 키워드를 매개변수로 받아, 해당 키워드가 포함된 게시글을 검색한다.
+     * 검색 결과는 NoticeDTO의 리스트 형태로 반환되며, 이는 모델에 속성으로 추가되어 뷰에서 사용할 수 있도록 한다.
+     *
+     * @param keyword 사용자가 입력한 검색 키워드. 이 키워드를 포함하는 제목 또는 내용을 가진 게시글이 검색된다.
+     * @param model 뷰에서 사용할 수 있는 속성들을 담는 객체. 이 메서드에서는 검색 결과인 noticeList를 속성으로 추가한다.
+     * @return 'notice/list' 뷰를 반환하여, 검색된 게시글 목록을 보여준다.
+     */
+    @GetMapping("/search")
+    public String search(@RequestParam("keyword") String keyword, Model model) {
+        List<NoticeDTO> noticeList = noticeService.search(keyword);
+        model.addAttribute("noticeList", noticeList);
+        return "notice/list";
+    }
 }

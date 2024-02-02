@@ -18,4 +18,5 @@ public interface NoticeMapper {
     List<NoticeDTO> getNoticePinnedFirst(@Param("start") int start, @Param("pageSize") int pageSize);
     List<NoticeDTO> getAllNoticePinnedFirst(@Param("start") int start, @Param("pageSize") int pageSize);
     void increaseViews(Long id);
+    List<NoticeDTO> search(String keyword);
 }
