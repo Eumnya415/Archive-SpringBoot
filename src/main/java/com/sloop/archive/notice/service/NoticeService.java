@@ -68,8 +68,12 @@ public class NoticeService {
         noticeMapper.deleteNotice(id);
     }
 
-    public List<NoticeDTO> search(String keyword) {
-        return noticeMapper.search(keyword);
+    public int getSearchCount(String keyword) {
+        return noticeMapper.getSearchCount(keyword);
+    }
+
+    public List<NoticeDTO> searchNotice(String keyword, int start, int pageSize) {
+        return noticeMapper.searchNotice(keyword, start, pageSize);
     }
 
     @Transactional

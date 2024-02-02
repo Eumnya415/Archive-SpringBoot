@@ -44,10 +44,16 @@
         SELECT * FROM tb_notice WHERE delete_flag = 0 ORDER BY pinned DESC, id DESC LIMIT #{start}, #{pageSize}
     </select>
 
-    <select id="search" parameterType="string" resultType="com.sloop.archive.notice.domain.NoticeDTO">
+    <select id="getSearchCount" resultType="int">
+        SELECT COUNT(*) FROM tb_notice
+        WHERE title LIKE CONCAT('%', #{keyword}, '%')
+    </select>
+
+    <select id="searchNotice" resultType="com.sloop.archive.notice.domain.NoticeDTO">
         SELECT * FROM tb_notice
         WHERE title LIKE CONCAT('%', #{keyword}, '%')
-           OR content LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY id DESC
+            LIMIT #{start}, #{pageSize}
     </select>
 
 

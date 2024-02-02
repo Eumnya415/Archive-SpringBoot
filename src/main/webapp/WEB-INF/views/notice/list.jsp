@@ -136,17 +136,31 @@
                     </table>
 
                     <div class="paging-wrap">
-                        <a href="/notice/list?page=1" class="first"></a>
-                        <a href="/notice/list?page=${currentPage - 1 > 0 ? currentPage - 1 : 1}" class="prev"></a>
-                        <c:forEach begin="1" end="${totalPages}" varStatus="loop">
-                            <a href="/notice/list?page=${loop.index}" class="page ${loop.index == currentPage ? 'active' : ''}">
-                                <span>${loop.index}</span>
-                            </a>
-                        </c:forEach>
-                        <a href="/notice/list?page=${currentPage + 1 <= totalPages ? currentPage + 1 : totalPages}" class="next"></a>
-                        <a href="/notice/list?page=${totalPages}" class="last"></a>
+                        <c:choose>
+                            <c:when test="${not empty keyword}">
+                                <a href="/notice/search?keyword=${keyword}&page=1" class="first"></a>
+                                <a href="/notice/search?keyword=${keyword}&page=${currentPage - 1 > 0 ? currentPage - 1 : 1}" class="prev"></a>
+                                <c:forEach begin="1" end="${totalPages}" varStatus="loop">
+                                    <a href="/notice/search?keyword=${keyword}&page=${loop.index}" class="page ${loop.index == currentPage ? 'active' : ''}">
+                                        <span>${loop.index}</span>
+                                    </a>
+                                </c:forEach>
+                                <a href="/notice/search?keyword=${keyword}&page=${currentPage + 1 <= totalPages ? currentPage + 1 : totalPages}" class="next"></a>
+                                <a href="/notice/search?keyword=${keyword}&page=${totalPages}" class="last"></a>
+                            </c:when>
+                            <c:otherwise>
+                                <a href="/notice/list?page=1" class="first"></a>
+                                <a href="/notice/list?page=${currentPage - 1 > 0 ? currentPage - 1 : 1}" class="prev"></a>
+                                <c:forEach begin="1" end="${totalPages}" varStatus="loop">
+                                    <a href="/notice/list?page=${loop.index}" class="page ${loop.index == currentPage ? 'active' : ''}">
+                                        <span>${loop.index}</span>
+                                    </a>
+                                </c:forEach>
+                                <a href="/notice/list?page=${currentPage + 1 <= totalPages ? currentPage + 1 : totalPages}" class="next"></a>
+                                <a href="/notice/list?page=${totalPages}" class="last"></a>
+                            </c:otherwise>
+                        </c:choose>
                     </div>
-
                 </div>
             </div>
         </div>
