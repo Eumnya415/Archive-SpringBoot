@@ -14,6 +14,7 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/TableDnD/0.9.1/jquery.tablednd.js" integrity="sha256-d3rtug+Hg1GZPB7Y/yTcRixO/wlI78+2m08tosoRn7A=" crossorigin="anonymous"></script>
     <script src="${contextPath}/inc/js/admin.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 </head>
 
 <body>
@@ -82,7 +83,7 @@
             <div class="table-type02">
                 <div class="table-top">
                     <span class="table-tit">공지사항 내용 보기</span>
-                    <form action="${contextPath}/notice/update/${notice.id}" method="post" onsubmit="return submitForm();">
+<%--                    <form action="${contextPath}/notice/update/${notice.id}" method="post" onsubmit="return submitForm();">--%>
                     <div class="btn-wrap">
                         <button type="button" class="btn w90" onclick="moveToNoticeList()">목록</button>
                         <button type="button" class="btn w90" onclick="location.href='${contextPath}/notice/update/${notice.id}'">수정</button>
@@ -104,7 +105,9 @@
                         </th>
                         <td>
                             <c:choose>
-                                <c:when test="${notice.pinned}">중요</c:when>
+                                <c:when test="${notice.pinned}">
+                                    <span style="color: red; font-weight: bold;">중요</span>
+                                </c:when>
                                 <c:otherwise>일반</c:otherwise>
                             </c:choose>
                         </td>
@@ -131,11 +134,17 @@
                         <th colspan="2">
                             <span><em>＊</em>내용</span>
                         </th>
-                        <td>${notice.content}</td>
+                        <td>
+                            <textarea name="content" id="content" rows="10" readonly>${notice.content}</textarea>
+<%--                            <div id="content">${notice.content}</div>--%>
+<%--                            <script>--%>
+<%--                                document.getElementById('content').innerHTML = '${notice.content}';--%>
+<%--                            </script>--%>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
-                </form>
+
             </div>
         </div>
     </div>
@@ -145,6 +154,30 @@
 
 
 <script>
+    CKEDITOR.replace('content', {
+        language: 'ko',
+        toolbar: [
+            { name: 'document', items: [ 'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates' ] },
+            { name: 'clipboard', items: [ 'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo' ] },
+            { name: 'editing', items: [ 'Find', 'Replace', '-', 'SelectAll', '-', 'Scayt' ] },
+            { name: 'forms', items: [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
+                    'HiddenField' ] },
+            '/',
+            { name: 'basicstyles', items: [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ] },
+            { name: 'paragraph', items: [ 'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv',
+                    '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl' ] },
+            { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+            { name: 'insert', items: [ 'Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe' ] },
+            '/',
+            { name: 'styles', items: [ 'Styles', 'Format', 'Font', 'FontSize' ] },
+            { name: 'colors', items: [ 'TextColor', 'BGColor' ] },
+            { name: 'tools', items: [ 'Maximize', 'ShowBlocks' ] },
+            { name: 'others', items: [ '-' ] },
+            { name: 'about', items: [ 'About' ] }
+        ],
+        readOnly: true
+    });
+
                     function confirmDelete() {
                         if (confirm('삭제하시겠습니까?')) {
                             alert('삭제되었습니다.');
@@ -167,5 +200,6 @@
                         }
                     }
                 </script>
+
 </body>
 </html>
