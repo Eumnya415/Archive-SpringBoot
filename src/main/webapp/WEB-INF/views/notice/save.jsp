@@ -13,10 +13,13 @@
     <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/TableDnD/0.9.1/jquery.tablednd.js" integrity="sha256-d3rtug+Hg1GZPB7Y/yTcRixO/wlI78+2m08tosoRn7A=" crossorigin="anonymous"></script>
     <script src="../inc/js/admin.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
-    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/translations/ko.js"></script>
-
+    <style>
+    .text::before {
+        content: none;
+    }
+    </style>
 </head>
 
 <body>
@@ -85,10 +88,10 @@
                 <div class="table-type02">
                     <div class="table-top">
                         <span class="table-tit">공지사항 등록</span>
-                        <form action="/notice/save" method="post" onsubmit="return submitForm();">
+                        <form id="noticeForm" method="post" action="/notice/save">
                         <div class="btn-wrap">
                             <button type="button" class="btn w90" onclick="resetForm()">초기화</button>
-                            <button type="submit" class="btn w90">작성</button>
+                            <button type="button" class="btn w90" onclick="submitForm()">작성</button>
                             <button type="button" class="btn w90" onclick="moveToNoticeList()">목록</button>
                         </div>
                     </div>
@@ -99,8 +102,7 @@
                             <col width="9%">
                             <col width="*">
                         </colgroup>
-
-
+                        
                         <tbody>
                         <tr>
                             <th colspan="2">
@@ -113,8 +115,9 @@
                                 <label for="pinned">중요</label>
                                 <input type="radio" id="normal" name="pinned" value="false" checked>
                                 <label for="normal">일반</label>
-                                <label>중요 버튼을 누르면 공지사항 게시판 목록 상단에 고정됩니다.</label>
+                                <label class="text">[중요 버튼을 누르면 공지사항 게시판 목록 상단에 고정됩니다.]</label>
                             </td>
+
                         </tr>
                         <tr>
                             <th colspan="2">
@@ -134,7 +137,7 @@
                     </span>
                             </th>
                             <td>
-                                <textarea id="content" name="content">${notice.content}</textarea>
+                                <textarea name="content" id="content" rows="10" required>${notice.content}</textarea>
                             </td>
                         </tr>
 
@@ -147,39 +150,44 @@
     </div>
 
 </div>
-
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        CKEDITOR.replace('content', {
+            language: 'ko',
+            toolbar: [
+                {name: 'document', items: ['Undo', 'Redo']},
+                {name: 'styles', items: ['Format']},
+                {name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike']},
+                {name: 'paragraph', items: ['NumberedList', 'BulletedList', 'Blockquote']},
+                {name: 'links', items: ['Link', 'Unlink']},
+                {name: 'insert', items: ['Image', 'Table']}
+            ],
+            height: 300
+        });
+    });
 
-    ClassicEditor.create( document.querySelector( '#content' ), {
+    function submitForm() {
+        var title = document.getElementById('title').value;
+        var content = CKEDITOR.instances.content.getData();
 
-        language: "ko"
-    } );
-
-</script>
-
-<script>
-        function submitForm() {
-            var title = document.getElementById('title').value;
-            var content = document.getElementById('content').value;
-
-            if (title.trim() === "" || content.trim() === "") {
-                alert('제목과 내용은 모두 작성해야 합니다.');
-                return false;
-            }
-
-            if (confirm('등록하시겠습니까?')) {
-                alert('등록되었습니다.');
-                return true;
-            } else {
-                alert('등록이 취소되었습니다.');
-                return false;
-            }
+        if (title.trim() === "" || content.trim() === "") {
+            alert('제목과 내용은 모두 작성해야 합니다.');
+            return false;
         }
 
+        if (confirm('등록하시겠습니까?')) {
+            alert('등록되었습니다.');
+            document.getElementById('noticeForm').submit();
+        } else {
+            alert('등록이 취소되었습니다.');
+            return false;
+        }
+    }
+
     function resetForm() {
-        if(confirm('내용을 초기화하시겠습니까?')) {
+        if (confirm('내용을 초기화하시겠습니까?')) {
             document.getElementById('title').value = '';
-            document.getElementById('content').value = '';
+            CKEDITOR.instances.content.setData('');
             document.getElementById('normal').checked = true;
             alert('초기화되었습니다.');
         } else {
@@ -187,14 +195,14 @@
         }
     }
 
-        function moveToNoticeList() {
-            if(confirm('목록 페이지로 이동하시겠습니까?')) {
-                alert('목록 페이지로 이동합니다.');
-                location.href='/notice/list';
-            } else {
-                alert('취소되었습니다.');
-            }
+    function moveToNoticeList() {
+        if (confirm('목록 페이지로 이동하시겠습니까?')) {
+            alert('목록 페이지로 이동합니다.');
+            location.href = '/notice/list';
+        } else {
+            alert('취소되었습니다.');
         }
+    }
 </script>
 </body>
 </html>
